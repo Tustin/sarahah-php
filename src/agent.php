@@ -14,7 +14,23 @@ abstract class Agent {
         ]
     ];
 
-    public function get($endpoint, $auth_token = null) {
+    public static function subdomainExists($subdomain) {
+        $res = self::get('account/subdomainexists?subdomain=' . $subdomain);
+        if ($res === false) {
+            return false;
+        }
+        return $res->status;
+    }
+
+    public static function emailExists($email) {
+        $res = self::get('account/emailexists?email=' . $email);
+        if ($res === false) {
+            return false;
+        }
+        return $res->status;
+    }
+
+    public static function get($endpoint, $auth_token = null) {
         $ch = curl_init();
 
         $options = self::$CURL_OPTIONS + [
@@ -40,17 +56,23 @@ abstract class Agent {
     }
 
 
-    public function post($endpoint, $data, $auth_token = null) {
+    public static function post($endpoint, $data, $json = false, $auth_token = null) {
         $ch = curl_init();
 
+        //There are some inconsistencies with their API
+        //Some requests are sent as JSON, while others are just normal post data
         $options = self::$CURL_OPTIONS + [
             CURLOPT_POST => TRUE,
-            CURLOPT_POSTFIELDS => http_build_query($data),
+            CURLOPT_POSTFIELDS => $json ? json_encode($data) : http_build_query($data),
             CURLOPT_URL => self::URL . $endpoint,
         ];
 
         if ($auth_token != null) {
             $options[CURLOPT_HTTPHEADER][] = 'Authorization: Bearer ' . $auth_token;
+        }
+
+        if ($json) {
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
         }
 
         curl_setopt_array($ch, $options);
