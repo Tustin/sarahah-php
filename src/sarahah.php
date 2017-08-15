@@ -65,4 +65,33 @@ class Sarahah extends Agent {
         //Should be good to login now
         return new Sarahah($email, $password);
     }
+
+    public function getProfile() {
+        return parent::get('account/profile', $this->auth_token);
+    }
+
+    public function getSentMessages($page = 0) {
+        return parent::get('message/sent?page='.$page, $this->auth_token);
+    }
+
+    public function getReceivedMessages($page = 0) {
+        return parent::get('message/received?page='.$page, $this->auth_token);
+    }
+
+    public function getFavoritedMessages($page = 0) {
+        return parent::get('message/favorited?page='.$page, $this->auth_token);
+    }
+
+    public function searchUsers($query, $page = 0) {
+        return parent::get('account/search?name=' . $query . '&page=' . $page); //You don't need to be logged in to use this endpoint
+    }
+
+    public function createMessage($recipientId, $message) {
+        return parent::post('message/create', [
+            "recipientId" => $recipientId,
+            "text" => $message
+        ], true, $this->auth_token);
+    }
+
+
 }

@@ -30,6 +30,14 @@ abstract class Agent {
         return $res->status;
     }
 
+    public static function tokenValid($token) {
+        $res = self::get('account/tokenvalid', $token);
+        if ($res === false) {
+            return false;
+        }
+        return $res->status;
+    }
+
     public static function get($endpoint, $auth_token = null) {
         $ch = curl_init();
 
