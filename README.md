@@ -9,3 +9,6 @@ An (unofficial) PHP wrapper for Sarahah
 - Update profile
 
 ... and more once the app actually has more content.
+
+## Examples
+See `example.php` for all the functions and how to use them.
