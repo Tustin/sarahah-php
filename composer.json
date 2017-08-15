@@ -1,0 +1,19 @@
+{
+    "name": "tustin/sarahah-php",
+    "authors": [
+        {
+            "name": "Tustin",
+            "email": "tustin@nextgenupdate.com"
+        }
+    ],
+    "keywords": [
+        "sarahah",
+        "php"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
+}
