@@ -16,7 +16,7 @@ class Sarahah extends Agent {
         $this->username = $username;
         $this->password = $password;
 
-        $this->login($username, $password);
+        $this->login();
 
     }
 
