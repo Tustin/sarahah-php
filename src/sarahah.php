@@ -82,8 +82,8 @@ class Sarahah extends Agent {
         return parent::get('message/favorited?page='.$page, $this->auth_token);
     }
 
-    public function searchUsers($query, $page = 0) {
-        return parent::get('account/search?name=' . $query . '&page=' . $page); //You don't need to be logged in to use this endpoint
+    public static function searchUsers($query, $page = 0) {
+        return Sarahah::get('account/search?name=' . $query . '&page=' . $page); //You don't need to be logged in to use this endpoint
     }
 
     public function createMessage($recipientId, $message) {
