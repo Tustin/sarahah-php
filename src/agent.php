@@ -97,4 +97,41 @@ abstract class Agent {
         return json_decode($result);
     }
 
+    public static function put($endpoint, $auth_token = null, $data = null, $json = false) {
+        $ch = curl_init();
+
+        $options = self::$CURL_OPTIONS + [
+            CURLOPT_URL => self::URL . $endpoint,
+            CURLOPT_CUSTOMREQUEST => "PUT"
+        ];
+
+        if ($data != null) {
+            $options[CURLOPT_POSTFIELDS] = $json ? json_encode($data) : http_build_query($data);
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Length: ' . strlen($options[CURLOPT_POSTFIELDS]); //This needs to be here because the server returns a 411 due to lack of content length for PUT
+        } else {
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Length: 0'; //This needs to be here because the server returns a 411 due to lack of content length for PUT
+        }
+        
+        if ($json) {
+            $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
+        }
+
+        if ($auth_token != null) {
+            $options[CURLOPT_HTTPHEADER][] = 'Authorization: Bearer ' . $auth_token;
+        }
+
+        curl_setopt_array($ch, $options);
+
+        $result = curl_exec($ch);
+
+        if ($result === false || curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+            curl_close($ch);
+            return false;
+        }
+
+        curl_close($ch);
+
+        return json_decode($result);
+    }
+
 }
