@@ -93,5 +93,33 @@ class Sarahah extends Agent {
         ], true, $this->auth_token);
     }
 
+    public function favoriteMessage($messageId, $favorite = "true") {
+        return parent::put('message/favorite?messageID=' . $messageId . '&favorited=' . $favorite, $this->auth_token);
+    }
+
+    public static function sendPasswordReset($email) {
+        return parent::get('account/forgotpassword?email=' . $email);
+    }
+
+    //Because Sarahah is all about anonymity, you have to block someone from one of their messages 
+    public function blockUser($messageId) {
+        return parent::put('message/block?messageID=' . $messageId, $this->auth_token);
+    }
+
+    public function reportMessage($messageId) {
+        return parent::put('message/report?messageID=' . $messageId, $this->auth_token);
+    }
+
+    public function updateProfile($name, $email, $notifySounds, $appearInSearch, $notifyEmail, $notifyPush, $allowAnonymousMessages) {
+        return parent::put('account/update', $this->auth_token, [
+            "name" => $name,
+            "email" => $email,
+            "notifySounds" => $notifySounds,
+            "appearInSearch" => $appearInSearch,
+            "notifyEmail" => $notifyEmail,
+            "notifyPush" => $notifyPush,
+            "allowAnonymousMessages" => $allowAnonymousMessages,
+        ], true);
+    }
 
 }
