@@ -1,6 +1,13 @@
 # sarahah-php
 An (unofficial) PHP wrapper for Sarahah
 
+## Installing
+sarahah-php requires composer and can be installed using this simple command:
+
+`composer require tustin/sarahah-php`
+
+in the directory you want the project in.
+
 ## Features
 - Create and login to accounts
 - Send messages
