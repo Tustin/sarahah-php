@@ -16,21 +16,21 @@ class Sarahah extends Agent {
         $this->username = $username;
         $this->password = $password;
 
-        if ($this->login() === false) {
+        if ($this->login($username, $password) === false) {
             throw new Exception("Login failed");
         }
     }
 
-    public function login() {
-        if (empty($this->username) || empty($this->password)) {
+    public function login($username, $password) {
+        if (empty($username) || empty($password)) {
             return false;
         }
 
         $result = parent::post('account/login', [
             "grant_type" => "password",
-            "password" =>   $this->password,
+            "password" =>   $password,
             "scope" =>      "offline_access",
-            "username" =>   $this->username
+            "username" =>   $username
         ]);
 
         if (!isset($result->access_token)) {
@@ -115,6 +115,7 @@ class Sarahah extends Agent {
 
     public function reportMessage($messageId) {
         $res = parent::put('message/report?messageID=' . $messageId, $this->auth_token);
+
         if ($res === false) {
             return false;
         }
