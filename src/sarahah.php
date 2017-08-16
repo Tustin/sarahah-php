@@ -16,8 +16,9 @@ class Sarahah extends Agent {
         $this->username = $username;
         $this->password = $password;
 
-        $this->login();
-
+        if ($this->login() === false) {
+            throw new Exception("Login failed");
+        }
     }
 
     public function login() {
@@ -103,11 +104,22 @@ class Sarahah extends Agent {
 
     //Because Sarahah is all about anonymity, you have to block someone from one of their messages 
     public function blockUser($messageId) {
-        return parent::put('message/block?messageID=' . $messageId, $this->auth_token);
+        $res = parent::put('message/block?messageID=' . $messageId, $this->auth_token);
+
+        if ($res === false) {
+            return false;
+        }
+
+        return $res->status;
     }
 
     public function reportMessage($messageId) {
-        return parent::put('message/report?messageID=' . $messageId, $this->auth_token);
+        $res = parent::put('message/report?messageID=' . $messageId, $this->auth_token);
+        if ($res === false) {
+            return false;
+        }
+
+        return $res->status;
     }
 
     public function updateProfile($name, $email, $notifySounds, $appearInSearch, $notifyEmail, $notifyPush, $allowAnonymousMessages) {
